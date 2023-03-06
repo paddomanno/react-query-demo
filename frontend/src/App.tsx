@@ -3,7 +3,7 @@ import { useState } from 'react';
 function App() {
   return (
     <div className="App">
-      <h1>Vite + React</h1>
+      <h1>Hello World</h1>
     </div>
   );
 }
