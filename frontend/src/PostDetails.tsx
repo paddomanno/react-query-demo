@@ -28,8 +28,6 @@ function PostDetails({}: Props) {
   if (postQuery.isError)
     return <pre>{JSON.stringify(`Error: ${postQuery.error}`)}</pre>;
 
-  console.log(postQuery.data);
-
   return (
     <main>
       <h1>PostDetails</h1>
