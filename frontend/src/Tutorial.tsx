@@ -46,7 +46,7 @@ function Tutorial() {
   // not loading, not error => success
 
   return (
-    <div className="App">
+    <div className="Tutorial App">
       <h1>Hello World</h1>
       <div>
         {postsQuery.data.map((post) => (

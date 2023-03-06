@@ -13,3 +13,15 @@ export async function getAllPosts(): Promise<PostFull[]> {
     throw e;
   }
 }
+
+export async function getPostById(id: number): Promise<PostFull> {
+  try {
+    const response = await axios.get<PostFull>(
+      `${API_URL}/posts/${id}`
+    );
+    return response.data;
+  } catch (e) {
+    console.error('Error fetching posts: ' + e);
+    throw e;
+  }
+}

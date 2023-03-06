@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { PostFull } from './types/types';
 
 type Props = {
@@ -8,7 +9,9 @@ type Props = {
 function PostCard({ post }: Props) {
   return (
     <div>
-      <h2>{post.title}</h2>
+      <Link to={`/posts/${post.id}`}>
+        <h2>{post.title}</h2>
+      </Link>
       <p>{post.author.username}</p>
     </div>
   );
