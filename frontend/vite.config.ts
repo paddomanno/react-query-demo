@@ -9,16 +9,16 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     // add backend as proxy
-    // use with frontend-URL.com/api/...
-    server: {
-      proxy: {
-        '/api': {
-          target: env.VITE_API_BASE_URL,
-          changeOrigin: true,
-          secure: false,
-          agent: new http.Agent(),
-        },
-      },
-    },
+    // use with /api/...
+    // server: {
+    //   proxy: {
+    //     '/api': {
+    //       target: env.VITE_API_BASE_URL,
+    //       changeOrigin: true,
+    //       secure: false,
+    //       agent: new http.Agent(),
+    //     },
+    //   },
+    // },
   };
 });
