@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PostFull } from './types/types';
+import { PostFull, PostWithTags } from './types/types';
 
 type Props = {
-  post: PostFull;
+  post: PostWithTags;
 };
 
-function PostCard({ post }: Props) {
+function PostCardNoAuthor({ post }: Props) {
   return (
     <div>
       <Link to={`/posts/${post.id}`}>
@@ -17,15 +17,9 @@ function PostCard({ post }: Props) {
           <span key={tag.name}>{`#${tag.name}`}</span>
         ))}
       </div>
-      <p>
-        Written by
-        <Link to={`/users/${post.author.id}`}>
-          {post.author.username}
-        </Link>
-      </p>
       <p>{post.createdDate.toUTCString()}</p>
     </div>
   );
 }
 
-export default PostCard;
+export default PostCardNoAuthor;

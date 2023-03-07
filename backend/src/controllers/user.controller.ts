@@ -36,6 +36,25 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// GET all posts by a user
+router.get('/:id/posts', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        authorId: parseInt(id as string, 10),
+      },
+      include: { tags: true },
+    });
+    if (posts) {
+      return res.status(200).send(posts);
+    }
+    return res.status(404).send(`User with ID ${id} not found`);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 // POST a user
 router.post(
   '/',

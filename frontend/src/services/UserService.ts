@@ -7,6 +7,9 @@ const API_URL = 'http://localhost:7000/api';
 export async function getAllUsers(): Promise<User[]> {
   try {
     const response = await axios.get<User[]>(API_URL + '/users');
+    response.data.map((user) => {
+      user.joinedDate = new Date(user.joinedDate);
+    });
     return response.data;
   } catch (e) {
     console.error('Error fetching users: ' + e);
@@ -17,6 +20,7 @@ export async function getAllUsers(): Promise<User[]> {
 export async function getUserById(id: number): Promise<User> {
   try {
     const response = await axios.get<User>(`${API_URL}/users/${id}`);
+    response.data.joinedDate = new Date(response.data.joinedDate);
     return response.data;
   } catch (e) {
     console.error('Error fetching users: ' + e);

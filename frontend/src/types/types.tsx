@@ -1,3 +1,5 @@
+// copied from backend\node_modules\.prisma\client\index.d.ts
+
 /**
  * Model User
  *
@@ -7,6 +9,7 @@ export type User = {
   email: string;
   username: string;
   realname: string | null;
+  imgUrl: string | null;
   bio: string;
   website: string;
   joinedDate: Date;
@@ -19,6 +22,7 @@ export type User = {
 export type Post = {
   id: number;
   title: string;
+  imgUrl: string | null;
   content: string;
   authorId: number;
   createdDate: Date;
@@ -35,4 +39,5 @@ export type Tag = {
 /**
  * Custom
  */
+export type PostWithTags = Post & { tags: Tag[] };
 export type PostFull = Post & { author: User; tags: Tag[] };

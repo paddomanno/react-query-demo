@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getPostById } from './services/PostService';
 import { getUserById } from './services/UserService';
 import { PostFull } from './types/types';
@@ -33,11 +33,18 @@ function PostDetails({}: Props) {
       <h1>PostDetails</h1>
       <h2>{postQuery.data.title}</h2>
       <small>
-        {userQuery.isLoading
-          ? 'Loading author...'
-          : userQuery.isError
-          ? 'Error loading author data'
-          : `Written by ${userQuery.data.username}`}
+        {userQuery.isLoading ? (
+          'Loading author...'
+        ) : userQuery.isError ? (
+          'Error loading author data'
+        ) : (
+          <>
+            Written by
+            <Link to={`/users/${userQuery.data?.id}`}>
+              {userQuery.data.username}
+            </Link>
+          </>
+        )}
       </small>
       <p>{postQuery.data.content}</p>
     </main>
