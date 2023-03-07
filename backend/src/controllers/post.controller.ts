@@ -40,6 +40,29 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// GET all posts with tag
+router.get('/tagged/:tag', async (req, res) => {
+  const { tag } = req.params;
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        tags: {
+          some: {
+            name: tag,
+          },
+        },
+      },
+      include: { tags: true, author: true },
+    });
+    if (posts) {
+      return res.status(200).send(posts);
+    }
+    return res.status(404).send(`Tag with name ${tag} not found`);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+});
+
 // POST a post
 router.post(
   '/',

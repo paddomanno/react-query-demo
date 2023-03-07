@@ -46,3 +46,22 @@ export async function getPostsByUser(
     throw e;
   }
 }
+
+export async function getPostsByTag(
+  tag: string
+): Promise<PostFull[]> {
+  try {
+    const response = await axios.get<PostFull[]>(
+      `${API_URL}/posts/tagged/${tag}`
+    );
+    response.data.map((post) => {
+      post.createdDate = new Date(post.createdDate);
+    });
+    console.log('got this');
+    console.log(response.data);
+    return response.data;
+  } catch (e) {
+    console.error('Error fetching posts: ' + e);
+    throw e;
+  }
+}

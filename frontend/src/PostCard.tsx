@@ -14,7 +14,10 @@ function PostCard({ post }: Props) {
       </Link>
       <div>
         {post.tags.map((tag) => (
-          <span key={tag.name}>{`#${tag.name}`}</span>
+          <Link
+            to={`/posts/tagged/${tag.name}`}
+            key={tag.name}
+          >{`#${tag.name}`}</Link>
         ))}
       </div>
       <p>
