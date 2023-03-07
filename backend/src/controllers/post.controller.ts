@@ -8,6 +8,9 @@ const router = Router({ mergeParams: true });
 router.get('/', async (req, res) => {
   try {
     const posts = await prisma.post.findMany({
+      orderBy: {
+        createdDate: 'asc',
+      },
       include: { author: true, tags: true },
     });
     if (posts) {

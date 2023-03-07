@@ -7,6 +7,9 @@ const API_URL = 'http://localhost:7000/api';
 export async function getAllPosts(): Promise<PostFull[]> {
   try {
     const response = await axios.get<PostFull[]>(API_URL + '/posts');
+    response.data.map((post) => {
+      post.createdDate = new Date(post.createdDate);
+    });
     return response.data;
   } catch (e) {
     console.error('Error fetching posts: ' + e);

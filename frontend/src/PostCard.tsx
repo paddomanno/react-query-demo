@@ -12,7 +12,13 @@ function PostCard({ post }: Props) {
       <Link to={`/posts/${post.id}`}>
         <h2>{post.title}</h2>
       </Link>
-      <p>{post.author.username}</p>
+      <div>
+        {post.tags.map((tag) => (
+          <span key={tag.name}>{`#${tag.name}`}</span>
+        ))}
+      </div>
+      <p>{`Written by ${post.author.username}`}</p>
+      <p>{post.createdDate.toUTCString()}</p>
     </div>
   );
 }
