@@ -26,7 +26,7 @@ async function main() {
       const lastName = faker.name.lastName();
       const email = faker.internet.email(firstName, lastName);
       const website = faker.internet.url();
-      const bio = `I'm a ${faker.name.jobTitle} at ${faker.company.name} where I ${faker.company.bs}.`;
+      const bio = `I'm a ${faker.name.jobTitle()} at ${faker.company.name()} where I ${faker.company.bs()}.`;
       const username = faker.internet.userName(firstName, lastName);
       const imgUrl = faker.internet.avatar();
 
