@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, Tag } from '@prisma/client';
 import { Request, Response, Router } from 'express';
 import prisma from '../../prisma/prismaClient';
 import { body, validationResult } from 'express-validator';
@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
   try {
     const posts = await prisma.post.findMany({
       orderBy: {
-        createdDate: 'asc',
+        createdDate: 'desc',
       },
       include: { author: true, tags: true },
     });
@@ -42,13 +42,13 @@ router.get('/:id', async (req, res) => {
 
 // GET all posts with tag
 router.get('/tagged/:tag', async (req, res) => {
-  const { tag } = req.params;
+  const tagName: string = req.params.tag;
   try {
     const posts = await prisma.post.findMany({
       where: {
         tags: {
           some: {
-            name: tag,
+            name: tagName,
           },
         },
       },
@@ -57,7 +57,7 @@ router.get('/tagged/:tag', async (req, res) => {
     if (posts) {
       return res.status(200).send(posts);
     }
-    return res.status(404).send(`Tag with name ${tag} not found`);
+    return res.status(404).send(`Tag with name ${tagName} not found`);
   } catch (err) {
     return res.status(500).send(err);
   }
@@ -70,22 +70,35 @@ router.post(
     // validate here
   ],
   async (req: Request, res: Response) => {
-    const newPost: Omit<Prisma.PostCreateInput, 'tags'> = req.body;
-    const newTags: string[] = req.body.tags;
+    const {
+      title,
+      content,
+      authorId,
+      imgUrl,
+      tags,
+    }: Prisma.PostCreateInput & { authorId: number; tags: Tag[] } =
+      req.body;
     try {
       const createdPost = await prisma.post.create({
         data: {
-          ...newPost,
+          title,
+          content,
+          imgUrl,
+          author: {
+            connect: {
+              id: authorId,
+            },
+          },
           tags: {
-            connectOrCreate: newTags.map((tagName) => {
+            connectOrCreate: tags.map((tag) => {
               return {
-                where: { name: tagName },
-                create: { name: tagName },
+                where: { name: tag.name },
+                create: { name: tag.name },
               };
             }),
           },
         },
-        include: { tags: true },
+        include: { tags: true, author: true },
       });
       return res.status(201).json(createdPost);
     } catch (err) {

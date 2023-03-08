@@ -14,8 +14,9 @@ function PostDetails({}: Props) {
     return <pre>Invalid post id</pre>;
   }
 
-  const postQuery = useQuery<PostFull>(['post', postId], () =>
-    getPostById(parseInt(postId as string, 10))
+  const postQuery = useQuery<PostFull>(
+    ['myposts', parseInt(postId as string, 10)],
+    () => getPostById(parseInt(postId as string, 10))
   );
 
   const userQuery = useQuery({

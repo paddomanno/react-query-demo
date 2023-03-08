@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PostFull, PostWithTags } from '../types/types';
+import { NewPost, PostFull, PostWithTags } from '../types/types';
 
 // const API_URL = process.env['VITE_API_BASE_URL'];
 const API_URL = 'http://localhost:7000/api';
@@ -57,11 +57,22 @@ export async function getPostsByTag(
     response.data.map((post) => {
       post.createdDate = new Date(post.createdDate);
     });
-    console.log('got this');
-    console.log(response.data);
     return response.data;
   } catch (e) {
     console.error('Error fetching posts: ' + e);
+    throw e;
+  }
+}
+
+export async function createPost(post: NewPost): Promise<PostFull> {
+  try {
+    const response = await axios.post<PostFull>(
+      `${API_URL}/posts`,
+      post
+    );
+    return response.data;
+  } catch (e) {
+    console.error('Error creating post: ' + e);
     throw e;
   }
 }

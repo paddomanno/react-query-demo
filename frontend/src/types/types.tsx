@@ -41,3 +41,6 @@ export type Tag = {
  */
 export type PostWithTags = Post & { tags: Tag[] };
 export type PostFull = Post & { author: User; tags: Tag[] };
+export type NewPost = Omit<Post, 'id' | 'createdDate'> & {
+  tags: Tag[];
+};

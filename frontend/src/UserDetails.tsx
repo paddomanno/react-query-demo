@@ -21,7 +21,7 @@ function UserDetails({}: Props) {
   );
 
   const postsQuery = useQuery<PostWithTags[]>({
-    queryKey: ['posts', userId],
+    queryKey: ['posts-by-user', userId],
     queryFn: () => getPostsByUser(parseInt(userId as string, 10)),
   });
 
