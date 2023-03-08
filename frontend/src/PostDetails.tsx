@@ -10,7 +10,7 @@ type Props = {};
 function PostDetails({}: Props) {
   const { postId } = useParams();
 
-  if (!postId || isNaN(postId)) {
+  if (!postId || isNaN(+postId)) {
     return <pre>Invalid post id</pre>;
   }
 
@@ -41,12 +41,22 @@ function PostDetails({}: Props) {
         ) : (
           <>
             Written by
-            <Link to={`/users/${userQuery.data?.id}`}>
+            <Link to={`/users/${userQuery.data.id}`}>
               {userQuery.data.username}
+            </Link>
+            <Link to={`/users/${userQuery.data.id}`}>
+              <img
+                src={userQuery.data.imgUrl || ''}
+                alt="User Avatar"
+              />
             </Link>
           </>
         )}
       </small>
+      <img
+        src={postQuery.data.imgUrl || ''}
+        alt="Post Background Image"
+      />
       <p>{postQuery.data.content}</p>
     </main>
   );

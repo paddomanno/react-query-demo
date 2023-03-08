@@ -26,6 +26,9 @@ function PostCard({ post }: Props) {
           {post.author.username}
         </Link>
       </p>
+      <Link to={`/users/${post.author.id}`}>
+        <img src={post.author.imgUrl || ''} alt="User Avatar" />
+      </Link>
       <p>{post.createdDate.toUTCString()}</p>
     </div>
   );
