@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { NewPost, PostFull, PostWithTags } from '../types/types';
+import {
+  NewPost,
+  PostFull,
+  PostsPaginatedResponse,
+  PostWithTags,
+} from '../types/types';
 
 // const API_URL = process.env['VITE_API_BASE_URL'];
 const API_URL = 'http://localhost:7000/api';
@@ -47,6 +52,9 @@ export async function getPostsByUser(
   }
 }
 
+/**
+ * Not used, using paginated version instead
+ */
 export async function getPostsByTag(
   tag: string
 ): Promise<PostFull[]> {
@@ -58,6 +66,39 @@ export async function getPostsByTag(
       post.createdDate = new Date(post.createdDate);
     });
     return response.data;
+  } catch (e) {
+    console.error('Error fetching posts: ' + e);
+    throw e;
+  }
+}
+
+export async function getPostsByTagPaginated(
+  tag: string,
+  page: number,
+  limit: number
+): Promise<PostsPaginatedResponse> {
+  try {
+    const response = await axios.get<PostFull[]>(
+      `${API_URL}/posts/tagged/${tag}`,
+      {
+        params: {
+          _page: page,
+          _sortBy: 'createdDate',
+          _limit: limit,
+        },
+      }
+    );
+    response.data.map((post) => {
+      post.createdDate = new Date(post.createdDate);
+    });
+    const hasNext =
+      page * limit <= parseInt(response.headers['x-total-count']);
+    return {
+      total: parseInt(response.headers['x-total-count']),
+      nextPage: hasNext ? page + 1 : undefined,
+      previousPage: page > 1 ? page - 1 : undefined,
+      posts: response.data,
+    };
   } catch (e) {
     console.error('Error fetching posts: ' + e);
     throw e;

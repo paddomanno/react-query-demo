@@ -43,8 +43,24 @@ router.get('/:id', async (req, res) => {
 // GET all posts with tag
 router.get('/tagged/:tag', async (req, res) => {
   const tagName: string = req.params.tag;
+  const { _page, _sortBy, _limit } = req.query;
+  if (
+    typeof _page !== 'string' ||
+    typeof _sortBy !== 'string' ||
+    typeof _limit !== 'string'
+  ) {
+    return res.status(500).send('Query parameters must be strings');
+  }
+
+  const page = parseInt(_page) || 1; // Default to page 1 if _page is not a number
+  const limit = parseInt(_limit) || 5; // Default to 10 entries per page if _limit is not a number
+
+  const skip = (page - 1) * limit;
+
   try {
     const posts = await prisma.post.findMany({
+      skip: skip,
+      take: limit,
       where: {
         tags: {
           some: {
@@ -52,9 +68,28 @@ router.get('/tagged/:tag', async (req, res) => {
           },
         },
       },
+      orderBy: _sortBy
+        ? {
+            [_sortBy]: 'desc',
+          }
+        : {
+            createdDate: 'desc',
+          },
       include: { tags: true, author: true },
     });
+    // Include the count of all items matching the query criteria
+    const totalCount = await prisma.post.count({
+      where: {
+        tags: {
+          some: {
+            name: tagName,
+          },
+        },
+      },
+    });
     if (posts) {
+      res.setHeader('x-total-count', totalCount.toString());
+      res.setHeader('Access-Control-Expose-Headers', 'x-total-count');
       return res.status(200).send(posts);
     }
     return res.status(404).send(`Tag with name ${tagName} not found`);

@@ -44,3 +44,9 @@ export type PostFull = Post & { author: User; tags: Tag[] };
 export type NewPost = Omit<Post, 'id' | 'createdDate'> & {
   tags: Tag[];
 };
+export type PostsPaginatedResponse = {
+  total: number;
+  nextPage: number | undefined;
+  previousPage: number | undefined;
+  posts: PostFull[];
+};

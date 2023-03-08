@@ -10,7 +10,7 @@ type Props = {};
 function PostDetails({}: Props) {
   const { postId } = useParams();
 
-  if (!postId) {
+  if (!postId || isNaN(postId)) {
     return <pre>Invalid post id</pre>;
   }
 
