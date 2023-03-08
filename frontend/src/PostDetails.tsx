@@ -33,6 +33,14 @@ function PostDetails({}: Props) {
     <main>
       <h1>PostDetails</h1>
       <h2>{postQuery.data.title}</h2>
+      <div>
+        {postQuery.data.tags.map((tag) => (
+          <Link
+            to={`/posts/tagged/${tag.name}`}
+            key={tag.name}
+          >{`#${tag.name}`}</Link>
+        ))}
+      </div>
       <small>
         {userQuery.isLoading ? (
           'Loading author...'
