@@ -22,6 +22,36 @@ export async function getAllPosts(): Promise<PostFull[]> {
   }
 }
 
+export async function getPostsPaginated(
+  page: number,
+  limit: number,
+  sortBy: string
+): Promise<PostsPaginatedResponse> {
+  try {
+    const response = await axios.get<PostFull[]>(API_URL + '/posts', {
+      params: {
+        _page: page,
+        _sortBy: sortBy,
+        _limit: limit,
+      },
+    });
+    response.data.map((post) => {
+      post.createdDate = new Date(post.createdDate);
+    });
+    const hasNext =
+      page * limit <= parseInt(response.headers['x-total-count']);
+    return {
+      total: parseInt(response.headers['x-total-count']),
+      nextPage: hasNext ? page + 1 : undefined,
+      previousPage: page > 1 ? page - 1 : undefined,
+      posts: response.data,
+    };
+  } catch (e) {
+    console.error('Error fetching posts: ' + e);
+    throw e;
+  }
+}
+
 export async function getPostById(id: number): Promise<PostFull> {
   try {
     const response = await axios.get<PostFull>(

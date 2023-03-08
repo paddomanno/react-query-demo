@@ -5,7 +5,7 @@ import { body, validationResult } from 'express-validator';
 const router = Router({ mergeParams: true });
 
 // GET all posts
-router.get('/', async (req, res) => {
+router.get('/all', async (req, res) => {
   try {
     const posts = await prisma.post.findMany({
       orderBy: {
@@ -14,6 +14,46 @@ router.get('/', async (req, res) => {
       include: { author: true, tags: true },
     });
     if (posts) {
+      return res.status(200).send(posts);
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+// GET posts paginated
+router.get('/', async (req, res) => {
+  const { _page, _sortBy, _limit } = req.query;
+  console.log(_page, _sortBy, _limit);
+  if (
+    typeof _page !== 'string' ||
+    typeof _sortBy !== 'string' ||
+    typeof _limit !== 'string'
+  ) {
+    return res.status(500).send('Query parameters must be strings');
+  }
+  const page = parseInt(_page) || 1; // Default to page 1 if _page is not a number
+  const limit = parseInt(_limit) || 5; // Default entries per page if _limit is not a number
+
+  const skip = (page - 1) * limit;
+  try {
+    const posts = await prisma.post.findMany({
+      skip: skip,
+      take: limit,
+      orderBy: _sortBy
+        ? {
+            [_sortBy]: 'desc',
+          }
+        : {
+            createdDate: 'desc',
+          },
+      include: { author: true, tags: true },
+    });
+    // Include the count of all items matching the query criteria
+    const totalCount = await prisma.post.count({});
+    if (posts) {
+      res.setHeader('x-total-count', totalCount.toString());
+      res.setHeader('Access-Control-Expose-Headers', 'x-total-count');
       return res.status(200).send(posts);
     }
   } catch (err) {
@@ -53,7 +93,7 @@ router.get('/tagged/:tag', async (req, res) => {
   }
 
   const page = parseInt(_page) || 1; // Default to page 1 if _page is not a number
-  const limit = parseInt(_limit) || 5; // Default to 10 entries per page if _limit is not a number
+  const limit = parseInt(_limit) || 5; // Default entries per page if _limit is not a number
 
   const skip = (page - 1) * limit;
 
