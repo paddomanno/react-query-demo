@@ -3,9 +3,7 @@ import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPost } from './services/PostService';
 
-type Props = {};
-
-function NewPostForm({}: Props) {
+function NewPostForm() {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
   const tagsRef = useRef<HTMLInputElement>(null);
@@ -15,7 +13,7 @@ function NewPostForm({}: Props) {
 
   const createPostMutation = useMutation({
     mutationFn: createPost,
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data /*, variables, context*/) => {
       // data = new post that was just created
       queryClient.setQueryData(['myposts', data.id], data); // put created post into cache
       queryClient.invalidateQueries(['myposts'], { exact: true }); // refetch main posts list

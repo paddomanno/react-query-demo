@@ -1,7 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { Request, Response, Router } from 'express';
 import prisma from '../../prisma/prismaClient';
-import { body, validationResult } from 'express-validator';
 const router = Router({ mergeParams: true });
 
 // GET all users

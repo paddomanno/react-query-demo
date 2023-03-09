@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { PostFull, PostWithTags } from './types/types';
+import { PostWithTags } from './types/types';
 
 type Props = {
   post: PostWithTags;

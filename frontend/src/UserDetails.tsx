@@ -1,20 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
 import { useParams } from 'react-router-dom';
-import PostCard from './PostCard';
 import PostCardNoAuthor from './PostCardNoAuthor';
-import { getPostById, getPostsByUser } from './services/PostService';
+import { getPostsByUser } from './services/PostService';
 import { getUserById } from './services/UserService';
-import { PostFull, PostWithTags, User } from './types/types';
+import { PostWithTags, User } from './types/types';
 
-type Props = {};
-
-function UserDetails({}: Props) {
+function UserDetails() {
   const { userId } = useParams();
-
-  if (!userId) {
-    return <pre>Invalid user id</pre>;
-  }
 
   const userQuery = useQuery<User>(['user', userId], () =>
     getUserById(parseInt(userId as string, 10))
@@ -25,6 +17,9 @@ function UserDetails({}: Props) {
     queryFn: () => getPostsByUser(parseInt(userId as string, 10)),
   });
 
+  if (!userId) {
+    return <pre>Invalid user id</pre>;
+  }
   if (userQuery.isLoading) return <h1>Loading...</h1>;
   if (userQuery.isError)
     return <pre>{JSON.stringify(`Error: ${userQuery.error}`)}</pre>;

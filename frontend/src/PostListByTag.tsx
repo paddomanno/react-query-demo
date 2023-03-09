@@ -1,32 +1,27 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
-import {
-  getAllPosts,
-  getPostsByTag,
-  getPostsByTagPaginated,
-} from './services/PostService';
+import { useState } from 'react';
+import { getPostsByTagPaginated } from './services/PostService';
 import PostCard from './PostCard';
 import { useParams } from 'react-router-dom';
-import { PostFull, PostsPaginatedResponse } from './types/types';
+import { PostsPaginatedResponse } from './types/types';
 
-type Props = {};
-
-function PostListByTag({}: Props) {
+function PostListByTag() {
   const { tag } = useParams();
   const LIMIT = 3;
-
-  if (!tag) {
-    return <pre>Invalid tag name</pre>;
-  }
-
   const [page, setPage] = useState(1);
 
   const postsQuery = useQuery<PostsPaginatedResponse>({
     queryKey: ['myposts', { page }],
     keepPreviousData: true, // show old data instead of 'loading' while fetching
-    queryFn: () => getPostsByTagPaginated(tag, page, LIMIT),
+    queryFn: () =>
+      tag
+        ? getPostsByTagPaginated(tag, page, LIMIT)
+        : Promise.reject(new Error('Invalid id')),
   });
 
+  if (!tag) {
+    return <pre>Invalid tag name</pre>;
+  }
   if (postsQuery.isLoading) return <h1>Loading...</h1>;
   if (postsQuery.isError)
     return <pre>{JSON.stringify(`Error: ${postsQuery.error}`)}</pre>;

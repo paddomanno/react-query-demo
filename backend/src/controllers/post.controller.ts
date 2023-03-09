@@ -1,7 +1,6 @@
 import { Prisma, Tag } from '@prisma/client';
 import { Request, Response, Router } from 'express';
 import prisma from '../../prisma/prismaClient';
-import { body, validationResult } from 'express-validator';
 const router = Router({ mergeParams: true });
 
 // GET all posts
@@ -151,8 +150,7 @@ router.post(
       authorId,
       imgUrl,
       tags,
-    }: Prisma.PostCreateInput & { authorId: number; tags: Tag[] } =
-      req.body;
+    }: Prisma.PostCreateInput & { authorId: number; tags: Tag[] } = req.body;
     try {
       const createdPost = await prisma.post.create({
         data: {

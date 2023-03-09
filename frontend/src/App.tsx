@@ -1,4 +1,3 @@
-import React from 'react';
 import PostList from './PostList';
 import { Route, Routes, Link } from 'react-router-dom';
 import PostDetails from './PostDetails';
@@ -24,10 +23,7 @@ export default function App() {
         <Route path="/posts/:postId" element={<PostDetails />} />
         <Route path="/users/:userId" element={<UserDetails />} />
         <Route path="/posts/new" element={<NewPostForm />} />
-        <Route
-          path="/posts/tagged/:tag"
-          element={<PostListByTag />}
-        />
+        <Route path="/posts/tagged/:tag" element={<PostListByTag />} />
       </Routes>
     </>
   );

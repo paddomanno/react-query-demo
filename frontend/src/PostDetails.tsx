@@ -1,18 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getPostById } from './services/PostService';
 import { getUserById } from './services/UserService';
 import { PostFull } from './types/types';
 
-type Props = {};
-
-function PostDetails({}: Props) {
+function PostDetails() {
   const { postId } = useParams();
-
-  if (!postId || isNaN(+postId)) {
-    return <pre>Invalid post id</pre>;
-  }
 
   const postQuery = useQuery<PostFull>(
     ['myposts', parseInt(postId as string, 10)],
@@ -22,8 +15,15 @@ function PostDetails({}: Props) {
   const userQuery = useQuery({
     queryKey: ['users', postQuery.data?.authorId],
     enabled: postQuery.data?.authorId != null,
-    queryFn: () => getUserById(postQuery.data?.authorId!),
+    queryFn: () =>
+      postQuery.data?.authorId
+        ? getUserById(postQuery.data?.authorId)
+        : Promise.reject(new Error('Invalid id')),
   });
+
+  if (!postId || isNaN(+postId)) {
+    return <pre>Invalid post id</pre>;
+  }
 
   if (postQuery.isLoading) return <h1>Loading...</h1>;
   if (postQuery.isError)

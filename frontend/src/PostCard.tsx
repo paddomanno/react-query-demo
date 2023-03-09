@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { PostFull } from './types/types';
 
@@ -22,9 +21,7 @@ function PostCard({ post }: Props) {
       </div>
       <p>
         Written by
-        <Link to={`/users/${post.author.id}`}>
-          {post.author.username}
-        </Link>
+        <Link to={`/users/${post.author.id}`}>{post.author.username}</Link>
       </p>
       <Link to={`/users/${post.author.id}`}>
         <img src={post.author.imgUrl || ''} alt="User Avatar" />

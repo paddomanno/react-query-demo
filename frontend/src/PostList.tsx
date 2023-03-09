@@ -1,15 +1,10 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import React, { useCallback, useRef } from 'react';
-import {
-  getAllPosts,
-  getPostsPaginated,
-} from './services/PostService';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useCallback, useRef } from 'react';
+import { getPostsPaginated } from './services/PostService';
 import PostCard from './PostCard';
 import { PostsPaginatedResponse } from './types/types';
 
-type Props = {};
-
-function PostList({}: Props) {
+function PostList() {
   const postsQuery = useInfiniteQuery<PostsPaginatedResponse>({
     queryKey: ['myposts'],
     getNextPageParam: (prevData) => prevData.nextPage,
@@ -42,7 +37,7 @@ function PostList({}: Props) {
         intersectObserver.current.observe(post);
       }
     },
-    [postsQuery.isLoading, postsQuery.hasNextPage]
+    [postsQuery]
   );
 
   if (postsQuery.isLoading) return <h1>Loading...</h1>;

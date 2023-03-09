@@ -1,9 +1,4 @@
-import { useState } from 'react';
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const POSTS = [
   { id: '1', title: 'Post 1' },
@@ -40,8 +35,7 @@ function Tutorial() {
   });
 
   if (postsQuery.isLoading) return <h1>Loading...</h1>;
-  if (postsQuery.isError)
-    return <pre>{JSON.stringify(postsQuery.error)}</pre>;
+  if (postsQuery.isError) return <pre>{JSON.stringify(postsQuery.error)}</pre>;
 
   // not loading, not error => success
 
