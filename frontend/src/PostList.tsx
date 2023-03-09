@@ -45,9 +45,9 @@ function PostList() {
     return <pre>{JSON.stringify(`Error: ${postsQuery.error}`)}</pre>;
 
   return (
-    <main>
-      <h1>PostList (Infinite Scroll Demo)</h1>
-      <ol>
+    <main className="container">
+      <h1 className="ml-3">PostList (Infinite Scroll Demo)</h1>
+      <ul className="list-unstyled">
         {postsQuery.data.pages
           .flatMap((pageData) => pageData.posts)
           .map((post, index) => {
@@ -66,12 +66,12 @@ function PostList() {
               );
             else
               return (
-                <li key={post.id}>
+                <li key={post.id} className="mb-2">
                   <PostCard post={post} />
                 </li>
               );
           })}
-      </ol>
+      </ul>
       {postsQuery.hasNextPage ? (
         <button onClick={() => postsQuery.fetchNextPage()}>
           {postsQuery.isFetchingNextPage ? 'Loading...' : 'Show more'}

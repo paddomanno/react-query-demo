@@ -8,7 +8,7 @@ import NewPostForm from './NewPostForm';
 export default function App() {
   return (
     <>
-      <nav>
+      <nav className="container">
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -23,7 +23,10 @@ export default function App() {
         <Route path="/posts/:postId" element={<PostDetails />} />
         <Route path="/users/:userId" element={<UserDetails />} />
         <Route path="/posts/new" element={<NewPostForm />} />
-        <Route path="/posts/tagged/:tag" element={<PostListByTag />} />
+        <Route
+          path="/posts/tagged/:tag"
+          element={<PostListByTag />}
+        />
       </Routes>
     </>
   );
