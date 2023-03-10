@@ -23,7 +23,6 @@ router.get('/all', async (req, res) => {
 // GET posts paginated
 router.get('/', async (req, res) => {
   const { _page, _sortBy, _limit } = req.query;
-  console.log(_page, _sortBy, _limit);
   if (
     typeof _page !== 'string' ||
     typeof _sortBy !== 'string' ||
@@ -150,7 +149,8 @@ router.post(
       authorId,
       imgUrl,
       tags,
-    }: Prisma.PostCreateInput & { authorId: number; tags: Tag[] } = req.body;
+    }: Prisma.PostCreateInput & { authorId: number; tags: Tag[] } =
+      req.body;
     try {
       const createdPost = await prisma.post.create({
         data: {

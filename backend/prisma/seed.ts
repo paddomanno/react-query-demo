@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
+import { EmojiType } from '@faker-js/faker/modules/internet/index';
 
 /**
  * Run with 'npx prisma db seed'
@@ -7,7 +8,7 @@ import { faker } from '@faker-js/faker';
 
 const prisma = new PrismaClient();
 async function main() {
-  let allAvailableTags = [];
+  const allAvailableTags = [];
 
   for (let i = 0; i < 20; i++) {
     if (Math.random() > 0.5) {
@@ -17,7 +18,21 @@ async function main() {
     }
   }
 
-  console.log(allAvailableTags);
+  const allAvailableEmojiTypes: EmojiType[] = [
+    'smiley',
+    'food',
+    'travel',
+    'activity',
+  ];
+
+  // for previewing emoji types
+  // allAvailableEmojiTypes.forEach((et) => {
+  //   console.log(et);
+  //   for (let i = 0; i < 10; i++) {
+  //     process.stdout.write(faker.internet.emoji({ types: [et] }));
+  //   }
+  // });
+  // return;
 
   let usersCreated = 0;
   while (usersCreated < 20) {
@@ -29,6 +44,10 @@ async function main() {
       const bio = `I'm a ${faker.name.jobTitle()} at ${faker.company.name()} where I ${faker.company.bs()}.`;
       const username = faker.internet.userName(firstName, lastName);
       const imgUrl = faker.internet.avatar();
+      const date2weeksago = new Date(
+        new Date().setDate(new Date().getDate() - 14)
+      );
+      const joinedDate = faker.date.past(2, date2weeksago);
 
       const createdUser = await prisma.user.create({
         data: {
@@ -38,6 +57,7 @@ async function main() {
           username: username,
           realname: `${firstName} ${lastName}`,
           imgUrl: imgUrl,
+          joinedDate: joinedDate,
         },
       });
       usersCreated++;
@@ -54,19 +74,19 @@ async function main() {
         const imgCategory = faker.helpers.arrayElement([
           'abstract',
           'animals',
-          'business',
-          'city',
-          'nightlife',
           'technics',
           'transport',
         ]);
         await prisma.post.create({
           data: {
-            title: faker.company
-              .catchPhrase()
-              .concat(' ', faker.internet.emoji()),
+            title: faker.company.catchPhrase().concat(
+              ' ',
+              faker.internet.emoji({
+                types: allAvailableEmojiTypes,
+              })
+            ),
             imgUrl: faker.image.imageUrl(640, 480, imgCategory, true),
-            content: faker.lorem.paragraphs(6, '<br/>\n'),
+            content: faker.lorem.paragraphs(20, '\n\n'),
             createdDate: faker.date.recent(10),
             author: {
               connect: {
