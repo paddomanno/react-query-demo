@@ -36,7 +36,10 @@ function PostListByTag() {
 
   return (
     <main>
-      <h1>PostListByTag (Pagination Demo)</h1>
+      <h1>
+        PostListByTag{' '}
+        <small className="text-muted">(Pagination Demo)</small>
+      </h1>
       <p>{postsQuery.data.total} posts published with this tag</p>
       <button
         disabled={!postsQuery.data.previousPage}

@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from 'date-fns';
-import { Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { PostFull } from './types/types';
+import Image from 'react-bootstrap/Image';
 
 type Props = {
   post: PostFull;

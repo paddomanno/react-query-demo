@@ -46,7 +46,10 @@ function PostList() {
 
   return (
     <main className="container">
-      <h1 className="ml-3">PostList (Infinite Scroll Demo)</h1>
+      <h1>
+        PostList{' '}
+        <small className="text-muted">(Infinite Scroll Demo)</small>
+      </h1>
       <ul className="list-unstyled">
         {postsQuery.data.pages
           .flatMap((pageData) => pageData.posts)
@@ -60,7 +63,7 @@ function PostList() {
                 1
             )
               return (
-                <li ref={lastPostRef} key={post.id}>
+                <li ref={lastPostRef} key={post.id} className="mb-2">
                   <PostCard post={post} />
                 </li>
               );
