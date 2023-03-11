@@ -29,8 +29,19 @@ const PORT: number = parseInt(process.env.PORT as string, 10);
 
 const app = express();
 
+// Add a list of allowed origins.
+// If you have more origins you would like to add, you can add them to the array below.
+const allowedOrigins = [
+  'http://localhost:5713',
+  'https://react-query-demo-mu.vercel.app/',
+];
+
+const corsOptions: cors.CorsOptions = {
+  origin: allowedOrigins,
+};
+
 app.use(helmet()); //set sensible defaults for HTTP response headers
-app.use(cors()); //enable all CORS requests
+app.use(cors(corsOptions)); //enable all CORS requests
 app.use(express.json()); //parse incoming requests with JSON payloads
 
 /**
