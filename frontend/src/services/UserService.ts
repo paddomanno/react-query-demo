@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { User } from '../types/types';
 
-// const API_URL = process.env['VITE_API_BASE_URL'];
-const API_URL = 'http://localhost:7000/api';
+const API_URL = import.meta.env['VITE_API_BASE_URL'];
+// const API_URL = 'http://localhost:7000/api';
 
 export async function getAllUsers(): Promise<User[]> {
   try {

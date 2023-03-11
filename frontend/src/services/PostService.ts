@@ -6,8 +6,8 @@ import {
   PostWithTags,
 } from '../types/types';
 
-// const API_URL = process.env['VITE_API_BASE_URL'];
-const API_URL = 'http://localhost:7000/api';
+const API_URL = import.meta.env['VITE_API_BASE_URL'];
+// const API_URL = 'http://localhost:7000/api';
 
 export async function getAllPosts(): Promise<PostFull[]> {
   try {
@@ -38,7 +38,8 @@ export async function getPostsPaginated(
     response.data.map((post) => {
       post.createdDate = new Date(post.createdDate);
     });
-    const hasNext = page * limit <= parseInt(response.headers['x-total-count']);
+    const hasNext =
+      page * limit <= parseInt(response.headers['x-total-count']);
     return {
       total: parseInt(response.headers['x-total-count']),
       nextPage: hasNext ? page + 1 : undefined,
@@ -53,7 +54,9 @@ export async function getPostsPaginated(
 
 export async function getPostById(id: number): Promise<PostFull> {
   try {
-    const response = await axios.get<PostFull>(`${API_URL}/posts/${id}`);
+    const response = await axios.get<PostFull>(
+      `${API_URL}/posts/${id}`
+    );
     response.data.createdDate = new Date(response.data.createdDate);
     return response.data;
   } catch (e) {
@@ -62,7 +65,9 @@ export async function getPostById(id: number): Promise<PostFull> {
   }
 }
 
-export async function getPostsByUser(userId: number): Promise<PostWithTags[]> {
+export async function getPostsByUser(
+  userId: number
+): Promise<PostWithTags[]> {
   try {
     const response = await axios.get<PostWithTags[]>(
       `${API_URL}/users/${userId}/posts`
@@ -80,7 +85,9 @@ export async function getPostsByUser(userId: number): Promise<PostWithTags[]> {
 /**
  * Not used, using paginated version instead
  */
-export async function getPostsByTag(tag: string): Promise<PostFull[]> {
+export async function getPostsByTag(
+  tag: string
+): Promise<PostFull[]> {
   try {
     const response = await axios.get<PostFull[]>(
       `${API_URL}/posts/tagged/${tag}`
@@ -114,7 +121,8 @@ export async function getPostsByTagPaginated(
     response.data.map((post) => {
       post.createdDate = new Date(post.createdDate);
     });
-    const hasNext = page * limit <= parseInt(response.headers['x-total-count']);
+    const hasNext =
+      page * limit <= parseInt(response.headers['x-total-count']);
     return {
       total: parseInt(response.headers['x-total-count']),
       nextPage: hasNext ? page + 1 : undefined,
@@ -129,7 +137,10 @@ export async function getPostsByTagPaginated(
 
 export async function createPost(post: NewPost): Promise<PostFull> {
   try {
-    const response = await axios.post<PostFull>(`${API_URL}/posts`, post);
+    const response = await axios.post<PostFull>(
+      `${API_URL}/posts`,
+      post
+    );
     return response.data;
   } catch (e) {
     console.error('Error creating post: ' + e);
