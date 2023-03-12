@@ -36,16 +36,30 @@ function PostDetails() {
     <main className="container">
       <h1>PostDetails</h1>
       <Card>
-        <img
-          className="img card-img-top"
-          style={{
-            width: '100%',
-            height: '300px',
-            objectFit: 'cover',
-          }}
-          src={postQuery.data.imgUrl || ''}
-          alt="Post Background Image"
-        />
+        {postQuery.data.imgUrl ? (
+          <img
+            className="img card-img-top"
+            style={{
+              width: '100%',
+              height: '300px',
+              objectFit: 'cover',
+            }}
+            src={postQuery.data.imgUrl}
+            alt="Post Background Image"
+          />
+        ) : (
+          <div
+            className="img card-img-top"
+            style={{
+              width: '100%',
+              height: '300px',
+              objectFit: 'cover',
+              backgroundColor: '#8EC5FC',
+              backgroundImage:
+                'linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%)',
+            }}
+          ></div>
+        )}
         <Card.Body>
           {userQuery.isLoading ? (
             <small>Loading author...</small>
