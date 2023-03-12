@@ -52,18 +52,16 @@ function PostDetails() {
           ) : userQuery.isError ? (
             <small>Error loading author data</small>
           ) : (
-            <div className="row">
-              <div className="col-1 pe-0">
-                <Link to={`/users/${userQuery.data.id}`}>
-                  <Image
-                    src={userQuery.data.imgUrl || ''}
-                    alt="User Avatar"
-                    roundedCircle
-                    fluid
-                    className="border border-2 border-dark border-opacity-50"
-                  />
-                </Link>
-              </div>
+            <div className="d-flex flex-row justify-content-start align-items-center gap-3">
+              <Link to={`/users/${userQuery.data.id}`}>
+                <Image
+                  src={userQuery.data.imgUrl || ''}
+                  height="80px"
+                  alt="User Avatar"
+                  roundedCircle
+                  className="border border-2 border-dark border-opacity-50"
+                />
+              </Link>
               <div className="col">
                 <p className="d-inline">by </p>
                 <Link
