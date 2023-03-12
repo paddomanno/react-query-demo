@@ -6,8 +6,8 @@ import {
   PostWithTags,
 } from '../types/types';
 
-// const API_URL = process.env['VITE_API_BASE_URL'];
-const API_URL = 'http://localhost:7000/api';
+const API_URL = import.meta.env['VITE_API_BASE_URL'];
+// const API_URL = 'http://localhost:7000/api';
 
 export async function getAllPosts(): Promise<PostFull[]> {
   try {

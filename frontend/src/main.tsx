@@ -8,7 +8,9 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import * as dotenv from 'dotenv';
 
+// dotenv.config();
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(
