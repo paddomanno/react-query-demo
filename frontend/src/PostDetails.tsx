@@ -36,8 +36,13 @@ function PostDetails() {
     <main className="container">
       <h1>PostDetails</h1>
       <Card>
-        <Card.Img
-          variant="top"
+        <img
+          className="img card-img-top"
+          style={{
+            width: '100%',
+            height: '300px',
+            objectFit: 'cover',
+          }}
           src={postQuery.data.imgUrl || ''}
           alt="Post Background Image"
         />
