@@ -4,6 +4,7 @@ import { getPostsByTagPaginated } from './services/PostService';
 import PostCard from './PostCard';
 import { useParams } from 'react-router-dom';
 import { PostsPaginatedResponse } from './types/types';
+import Button from 'react-bootstrap/esm/Button';
 
 function PostListByTag() {
   const { tag } = useParams();
@@ -35,41 +36,46 @@ function PostListByTag() {
   }
 
   return (
-    <main>
+    <main className="container">
       <h1>
         PostListByTag{' '}
         <small className="text-muted">(Pagination Demo)</small>
       </h1>
-      <p>{postsQuery.data.total} posts published with this tag</p>
-      <button
+      <p>
+        {postsQuery.data.total} posts published with the tag{' '}
+        <strong>#{tag}</strong>
+      </p>
+      <Button
         disabled={!postsQuery.data.previousPage}
         onClick={prevPage}
+        className="me-2"
       >
         Previous
-      </button>
-      <button disabled={!postsQuery.data.nextPage} onClick={nextPage}>
+      </Button>
+      <Button disabled={!postsQuery.data.nextPage} onClick={nextPage}>
         Next
-      </button>
-      <ul>
+      </Button>
+      <ul className="list-unstyled mt-3">
         {postsQuery.data.posts.map((post) => (
-          <li key={post.id}>
+          <li key={post.id} className="mb-2">
             <PostCard post={post} />
           </li>
         ))}
       </ul>
       <small>{postsQuery.isPreviousData && 'Loading...'}</small>
-      <button
+      <Button
         disabled={!postsQuery.data.previousPage}
         onClick={prevPage}
+        className="me-2"
       >
         Previous
-      </button>
-      <button disabled={!postsQuery.data.nextPage} onClick={nextPage}>
+      </Button>
+      <Button disabled={!postsQuery.data.nextPage} onClick={nextPage}>
         Next
-      </button>
+      </Button>
       <p>
         Showing posts {(page - 1) * LIMIT + 1}-
-        {Math.min(page * LIMIT, postsQuery.data.total)} of
+        {Math.min(page * LIMIT, postsQuery.data.total)} of{' '}
         {postsQuery.data.total}
       </p>
     </main>

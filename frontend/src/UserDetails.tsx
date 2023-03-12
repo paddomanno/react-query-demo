@@ -8,6 +8,12 @@ import { PostWithTags, User } from './types/types';
 import Image from 'react-bootstrap/Image';
 import Card from 'react-bootstrap/esm/Card';
 import Container from 'react-bootstrap/esm/Container';
+import {
+  FaAddressCard,
+  FaBirthdayCake,
+  FaEnvelope,
+  FaLink,
+} from 'react-icons/fa';
 
 function UserDetails() {
   const { userId } = useParams();
@@ -45,14 +51,23 @@ function UserDetails() {
               className="border border-2 border-dark border-opacity-50"
             />
             <h2>{userQuery.data.username}</h2>
-            <small>{userQuery.data.realname}</small>
+            <small>
+              <FaAddressCard size={20} /> {userQuery.data.realname}
+            </small>
             <p>{userQuery.data.bio}</p>
-            <p>{userQuery.data.email}</p>
-            <p>{userQuery.data.website}</p>
-            <p>
-              Joined {formatDistanceToNow(userQuery.data.joinedDate)}{' '}
-              ago
-            </p>
+
+            <div className="d-flex flex-wrap gap-3 justify-content-center">
+              <p>
+                <FaEnvelope /> {userQuery.data.email}
+              </p>
+              <p>
+                <FaLink /> {userQuery.data.website}
+              </p>
+              <p>
+                <FaBirthdayCake /> Joined{' '}
+                {formatDistanceToNow(userQuery.data.joinedDate)} ago
+              </p>
+            </div>
           </Container>
         </Card.Body>
       </Card>
