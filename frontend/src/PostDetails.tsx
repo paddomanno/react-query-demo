@@ -28,7 +28,7 @@ function PostDetails() {
     return <pre>Invalid post id</pre>;
   }
 
-  if (postQuery.isLoading) return <h1>Loading...</h1>;
+  // if (postQuery.isLoading) return <h1>Loading...</h1>;
   if (postQuery.isError)
     return <pre>{JSON.stringify(`Error: ${postQuery.error}`)}</pre>;
 
@@ -36,9 +36,14 @@ function PostDetails() {
     <main className="container">
       <h1>PostDetails</h1>
       <Card>
-        {postQuery.data.imgUrl ? (
+        {postQuery.isLoading ? (
+          <div
+            className="img card-img-top skeleton skeleton-img"
+            style={{ height: '300px' }}
+          ></div>
+        ) : postQuery.data.imgUrl ? (
           <img
-            className="img card-img-top"
+            className="img card-img-top skeleton skeleton-img"
             style={{
               width: '100%',
               height: '300px',
@@ -62,7 +67,20 @@ function PostDetails() {
         )}
         <Card.Body>
           {userQuery.isLoading ? (
-            <small>Loading author...</small>
+            // <small>Loading author...</small>
+            <div className="row">
+              <div className="col-1 pe-0">
+                <img
+                  className="rounded-circle skeleton skeleton-img"
+                  width={128}
+                  height={128}
+                />
+              </div>
+              <div className="col">
+                <div className="skeleton skeleton-text"></div>
+                <div className="skeleton skeleton-text"></div>
+              </div>
+            </div>
           ) : userQuery.isError ? (
             <small>Error loading author data</small>
           ) : (
@@ -84,24 +102,50 @@ function PostDetails() {
                 >
                   {userQuery.data.username}
                 </Link>
-                <p>
-                  {formatDistanceToNow(postQuery.data.createdDate)}{' '}
-                  ago
-                </p>
+                {postQuery.isLoading ? (
+                  <div className="skeleton skeleton-text"></div>
+                ) : (
+                  <p>
+                    {formatDistanceToNow(postQuery.data.createdDate)}{' '}
+                    ago
+                  </p>
+                )}
               </div>
             </div>
           )}
-          <h2 className="fw-bolder mt-2">{postQuery.data.title}</h2>
-          <div className="ms-2">
-            {postQuery.data.tags.map((tag) => (
-              <Link
-                to={`/posts/tagged/${tag.name}`}
-                key={tag.name}
-                className="me-3 link-dark"
-              >{`#${tag.name}`}</Link>
-            ))}
-          </div>
-          <p className="mt-4">{postQuery.data.content}</p>
+          {postQuery.isLoading ? (
+            <>
+              <div
+                className="skeleton skeleton-text mt-5"
+                style={{ height: '2rem' }}
+              ></div>
+              <div className="skeleton skeleton-text"></div>
+              <div className="mt-4">
+                <div className="skeleton skeleton-text"></div>
+                <div className="skeleton skeleton-text"></div>
+                <div className="skeleton skeleton-text"></div>
+                <div className="skeleton skeleton-text"></div>
+                <div className="skeleton skeleton-text"></div>
+                <div className="skeleton skeleton-text"></div>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 className="fw-bolder mt-2">
+                {postQuery.data.title}
+              </h2>
+              <div className="ms-2">
+                {postQuery.data.tags.map((tag) => (
+                  <Link
+                    to={`/posts/tagged/${tag.name}`}
+                    key={tag.name}
+                    className="me-3 link-dark"
+                  >{`#${tag.name}`}</Link>
+                ))}
+              </div>
+              <p className="mt-4">{postQuery.data.content}</p>
+            </>
+          )}
         </Card.Body>
       </Card>
     </main>

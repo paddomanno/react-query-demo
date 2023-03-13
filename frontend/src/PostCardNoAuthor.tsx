@@ -31,4 +31,24 @@ function PostCardNoAuthor({ post }: Props) {
   );
 }
 
+const Skeleton = () => {
+  return (
+    <div className="card pb-4">
+      <div className="card-body">
+        <div className="row">
+          <div className="col">
+            <div
+              className="skeleton skeleton-text"
+              style={{ height: '2rem' }}
+            ></div>
+            <div className="skeleton skeleton-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+PostCardNoAuthor.Skeleton = Skeleton;
+
 export default PostCardNoAuthor;

@@ -33,9 +33,10 @@ const app = express();
 // If you have more origins you would like to add, you can add them to the array below.
 const allowedOrigins = [
   'http://localhost:5713',
+  'http://127.0.0.1:5173',
   'https://react-query-demo-mu.vercel.app',
-  'http://react-query-demo-git-master-paddomanno.vercel.app',
-  'http://react-query-demo-paddomanno.vercel.app',
+  'https://react-query-demo-git-master-paddomanno.vercel.app',
+  'https://react-query-demo-paddomanno.vercel.app',
 ];
 
 const corsOptions: cors.CorsOptions = {

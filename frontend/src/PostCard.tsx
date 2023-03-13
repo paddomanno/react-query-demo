@@ -37,7 +37,7 @@ function PostCard({ post }: Props) {
           </div>
         </div>
         <div className="row">
-          <div className="offset-1">
+          <div className="col offset-1">
             <Link
               to={`/posts/${post.id}`}
               className="link-dark text-decoration-none"
@@ -59,5 +59,38 @@ function PostCard({ post }: Props) {
     </div>
   );
 }
+
+const Skeleton = () => {
+  return (
+    <div className="card pb-4">
+      <div className="card-body">
+        <div className="row">
+          <div className="col-1 pe-0">
+            <img
+              className="rounded-circle skeleton skeleton-img"
+              width={128}
+              height={128}
+            />
+          </div>
+          <div className="col">
+            <div className="skeleton skeleton-text"></div>
+            <div className="skeleton skeleton-text"></div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col offset-1">
+            <div
+              className="skeleton skeleton-text"
+              style={{ height: '2rem' }}
+            ></div>
+            <div className="skeleton skeleton-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+PostCard.Skeleton = Skeleton;
 
 export default PostCard;

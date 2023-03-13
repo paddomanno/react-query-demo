@@ -5,11 +5,12 @@ import PostCard from './PostCard';
 import { PostsPaginatedResponse } from './types/types';
 
 function PostList() {
+  const LIMIT = 5;
   const postsQuery = useInfiniteQuery<PostsPaginatedResponse>({
     queryKey: ['myposts'],
     getNextPageParam: (prevData) => prevData.nextPage,
     queryFn: ({ pageParam = 1 }) =>
-      getPostsPaginated(pageParam, 5, 'createdDate'), // pageParam is returned by getNextPageParam
+      getPostsPaginated(pageParam, LIMIT, 'createdDate'), // pageParam is returned by getNextPageParam
   });
 
   const intersectObserver = useRef<IntersectionObserver>();
@@ -40,7 +41,7 @@ function PostList() {
     [postsQuery]
   );
 
-  if (postsQuery.isLoading) return <h1>Loading...</h1>;
+  // if (postsQuery.isLoading) return <h1>Loading...</h1>;
   if (postsQuery.isError)
     return <pre>{JSON.stringify(`Error: ${postsQuery.error}`)}</pre>;
 
@@ -50,35 +51,52 @@ function PostList() {
         PostList{' '}
         <small className="text-muted">(Infinite Scroll Demo)</small>
       </h1>
-      <ul className="list-unstyled">
-        {postsQuery.data.pages
-          .flatMap((pageData) => pageData.posts)
-          .map((post, index) => {
-            // if this is the last post, attach the lastPostRef
-            if (
-              index ===
-              postsQuery.data.pages.flatMap(
-                (pageData) => pageData.posts
-              ).length -
-                1
-            )
-              return (
-                <li ref={lastPostRef} key={post.id} className="mb-2">
-                  <PostCard post={post} />
-                </li>
-              );
-            else
-              return (
-                <li key={post.id} className="mb-2">
-                  <PostCard post={post} />
-                </li>
-              );
-          })}
-      </ul>
+      {postsQuery.isLoading ? (
+        Array.from({ length: LIMIT }, (_, i) => (
+          <div key={i} className="mb-2">
+            <PostCard.Skeleton />
+          </div>
+        ))
+      ) : (
+        <ul className="list-unstyled">
+          {postsQuery.data.pages
+            .flatMap((pageData) => pageData.posts)
+            .map((post, index) => {
+              // if this is the last post, attach the lastPostRef
+              if (
+                index ===
+                postsQuery.data.pages.flatMap(
+                  (pageData) => pageData.posts
+                ).length -
+                  1
+              )
+                return (
+                  <li
+                    ref={lastPostRef}
+                    key={post.id}
+                    className="mb-2"
+                  >
+                    <PostCard post={post} />
+                  </li>
+                );
+              else
+                return (
+                  <li key={post.id} className="mb-2">
+                    <PostCard post={post} />
+                  </li>
+                );
+            })}
+        </ul>
+      )}
       {postsQuery.hasNextPage ? (
-        <button onClick={() => postsQuery.fetchNextPage()}>
-          {postsQuery.isFetchingNextPage ? 'Loading...' : 'Show more'}
-        </button>
+        // <button onClick={() => postsQuery.fetchNextPage()}>
+        //   {postsQuery.isFetchingNextPage ? 'Loading...' : 'Show more'}
+        // </button>
+        postsQuery.isFetchingNextPage ? (
+          <h2>Loading more posts...</h2>
+        ) : (
+          <small>Waiting for scrolling</small>
+        )
       ) : (
         <p>No more posts</p>
       )}
